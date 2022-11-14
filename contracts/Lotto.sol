@@ -9,6 +9,7 @@ contract Lotto {
     event LottoEvent(bool isWinner);
 
     constructor() payable {
+        // set initial known number to allow for testing
         secretNumber = 45;
     }
 

@@ -1,6 +1,6 @@
 const Lotto = artifacts.require("Lotto");
 
-
+// test contract deployed successfully
 contract("Deployed", function () {
   it("successful deployed", async function () {
     await Lotto.deployed();
@@ -8,6 +8,7 @@ contract("Deployed", function () {
   });
 });
 
+// test initial prize amount
 contract("Current Prize", function () {
   it("initial prize is zero", async function () {
     const contract = await Lotto.deployed();
@@ -16,6 +17,7 @@ contract("Current Prize", function () {
   });
 });
 
+// test that users cannot play without paying
 contract("Not payed", function () {
   it("cannot play without paying", async function () {
     const contract = await Lotto.deployed();
@@ -30,7 +32,7 @@ contract("Not payed", function () {
   });
 });
 
-
+// test if the loss event is emmited
 contract("Play", function () {
   it("player did not win", async function () {
     const contract = await Lotto.deployed();
@@ -43,6 +45,7 @@ contract("Play", function () {
   });
 });
 
+// test if it is a win event 
 contract("Play", function () {
   it("player won", async function () {
     const contract = await Lotto.deployed();
