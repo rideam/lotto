@@ -1,12 +1,8 @@
 const Lotto = artifacts.require("Lotto");
 
-/*
- * uncomment accounts to access the test accounts made available by the
- * Ethereum client
- * See docs: https://www.trufflesuite.com/docs/truffle/testing/writing-tests-in-javascript
- */
-contract("Deployed", function (/* accounts */) {
-  it("successful deploy", async function () {
+
+contract("Deployed", function () {
+  it("successful deployed", async function () {
     await Lotto.deployed();
     return assert.isTrue(true);
   });
@@ -20,16 +16,7 @@ contract("Current Prize", function () {
   });
 });
 
-contract("Play", function (/* accounts */) {
-  it("should assert true", async function () {
-    const contract = await Lotto.deployed();
-    const a = await contract.play(20,{ value: web3.utils.toWei("0.001","ether")});
-    // await expect(a).to.emit('LottoEvent');
-    // return assert.isTrue(true);
-  });
-});
-
-contract("Not payed", function (/* accounts */) {
+contract("Not payed", function () {
   it("cannot play without paying", async function () {
     const contract = await Lotto.deployed();
     let err = null;
@@ -39,7 +26,31 @@ contract("Not payed", function (/* accounts */) {
       err = e
     }
     assert.ok(err instanceof Error)
-    // await expect(a).to.be.revertedWith('You need to send 0.001 ETH!');
-    // return assert.isTrue(true);
+
+  });
+});
+
+
+contract("Play", function () {
+  it("player did not win", async function () {
+    const contract = await Lotto.deployed();
+    const a = await contract.play(20,{ value: web3.utils.toWei("0.001","ether")});
+    const { logs } = a;
+    const log = logs[0];
+    assert.equal(log.event, 'LottoEvent');
+    assert.equal(log.args.isWinner, false);
+
+  });
+});
+
+contract("Play", function () {
+  it("player won", async function () {
+    const contract = await Lotto.deployed();
+    const a = await contract.play(45,{ value: web3.utils.toWei("0.001","ether")});
+    const { logs } = a;
+    const log = logs[0];
+    assert.equal(log.event, 'LottoEvent');
+    assert.equal(log.args.isWinner, true);
+
   });
 });
